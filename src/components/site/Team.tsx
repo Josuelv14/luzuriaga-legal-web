@@ -1,8 +1,8 @@
 import { useMemo } from "react";
 import { useLang } from "@/lib/i18n";
 import { BadgeCheck, Award, Languages, Star, Briefcase, ShieldCheck } from "lucide-react";
-import teamJannet from "@/assets/team-jannet.jpg";
-import teamAssistant from "@/assets/team-assistant.jpg";
+import teamJannet from "@/assets/team-jannetl.png";
+import teamAssistant from "@/assets/team-carlos.png";
 
 type TeamMember = {
   id: string;

@@ -1,4 +1,4 @@
-import { Scale, Phone, Mail, MapPin, Facebook, Instagram, MessageCircle } from "lucide-react";
+import { Scale, Phone, Mail, MapPin, Facebook, MessageCircle } from "lucide-react";
 import { useLang, PHONE, PHONE_INTL } from "@/lib/i18n";
 
 export function Footer() {
@@ -19,8 +19,7 @@ export function Footer() {
           <p className="mt-4 text-sm text-navy-foreground/70 max-w-md">{tr("tagline")}</p>
           <div className="mt-5 flex gap-3">
             <a href="https://wa.me/19176910055" aria-label="WhatsApp" className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 hover:bg-gold hover:text-navy transition"><MessageCircle className="h-4 w-4" /></a>
-            <a href="#" aria-label="Facebook" className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 hover:bg-gold hover:text-navy transition"><Facebook className="h-4 w-4" /></a>
-            <a href="#" aria-label="Instagram" className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 hover:bg-gold hover:text-navy transition"><Instagram className="h-4 w-4" /></a>
+            <a href="https://www.facebook.com/profile.php?id=100087573588437" target="_blank" rel="noreferrer" aria-label="Facebook" className="flex h-9 w-9 items-center justify-center rounded-full bg-white/10 hover:bg-gold hover:text-navy transition"><Facebook className="h-4 w-4" /></a>
           </div>
         </div>
 

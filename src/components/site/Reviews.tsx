@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useLang } from "@/lib/i18n";
-import { Star, ThumbsUp, BadgeCheck, Camera, Plus, X, Filter } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Star, BadgeCheck, Filter, ThumbsUp } from "lucide-react";
 
 type Badge = "verified" | "notary" | "apostille" | "uscis";
 
@@ -26,8 +25,8 @@ const SEED: Review[] = [
 ];
 
 const STORAGE_REVIEWS = "lls_reviews_v1";
-const STORAGE_LIKES = "lls_likes_v1";
-const STORAGE_LIKED = "lls_liked_v1";
+// const STORAGE_LIKES = "lls_likes_v1";
+// const STORAGE_LIKED = "lls_liked_v1";
 
 const BADGE_LABEL: Record<Badge, { es: string; en: string }> = {
   verified: { es: "Cliente Verificado", en: "Verified Client" },
@@ -65,56 +64,55 @@ export function Reviews() {
   }), [lang]);
 
   const [userReviews, setUserReviews] = useState<Review[]>([]);
-  const [likes, setLikes] = useState<Record<string, number>>({});
-  const [liked, setLiked] = useState<Record<string, boolean>>({});
-  const [sort, setSort] = useState<SortKey>("helpful");
-  const [open, setOpen] = useState(false);
+  // const [likes, setLikes] = useState<Record<string, number>>({});
+  // const [liked, setLiked] = useState<Record<string, boolean>>({});
+  const [sort, setSort] = useState<SortKey>("recent");
+  // const [open, setOpen] = useState(false);
 
   useEffect(() => {
     try {
       const r = localStorage.getItem(STORAGE_REVIEWS);
       if (r) setUserReviews(JSON.parse(r));
-      const l = localStorage.getItem(STORAGE_LIKES);
-      if (l) setLikes(JSON.parse(l));
-      const ld = localStorage.getItem(STORAGE_LIKED);
-      if (ld) setLiked(JSON.parse(ld));
+      // const l = localStorage.getItem(STORAGE_LIKES);
+      // if (l) setLikes(JSON.parse(l));
+      // const ld = localStorage.getItem(STORAGE_LIKED);
+      // if (ld) setLiked(JSON.parse(ld));
     } catch {}
   }, []);
 
   const all = useMemo(() => [...SEED, ...userReviews], [userReviews]);
 
-  const getLikes = (r: Review) => r.baseLikes + (likes[r.id] ?? 0);
+  // const getLikes = (r: Review) => r.baseLikes + (likes[r.id] ?? 0);
 
   const sorted = useMemo(() => {
     const arr = [...all];
-    if (sort === "helpful") arr.sort((a, b) => getLikes(b) - getLikes(a));
     if (sort === "recent") arr.sort((a, b) => +new Date(b.date) - +new Date(a.date));
-    if (sort === "rating") arr.sort((a, b) => b.rating - a.rating || getLikes(b) - getLikes(a));
+    if (sort === "rating") arr.sort((a, b) => b.rating - a.rating);
     return arr;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [all, sort, likes]);
+  }, [all, sort]);
 
   const avg = useMemo(() => (all.reduce((s, r) => s + r.rating, 0) / all.length).toFixed(1), [all]);
 
-  const toggleLike = (id: string) => {
-    setLiked((prev) => {
-      const next = { ...prev, [id]: !prev[id] };
-      localStorage.setItem(STORAGE_LIKED, JSON.stringify(next));
-      return next;
-    });
-    setLikes((prev) => {
-      const delta = liked[id] ? -1 : 1;
-      const next = { ...prev, [id]: (prev[id] ?? 0) + delta };
-      localStorage.setItem(STORAGE_LIKES, JSON.stringify(next));
-      return next;
-    });
-  };
+  // const toggleLike = (id: string) => {
+  //   setLiked((prev) => {
+  //     const next = { ...prev, [id]: !prev[id] };
+  //     localStorage.setItem(STORAGE_LIKED, JSON.stringify(next));
+  //     return next;
+  //   });
+  //   setLikes((prev) => {
+  //     const delta = liked[id] ? -1 : 1;
+  //     const next = { ...prev, [id]: (prev[id] ?? 0) + delta };
+  //     localStorage.setItem(STORAGE_LIKES, JSON.stringify(next));
+  //     return next;
+  //   });
+  // };
 
-  const addReview = (r: Review) => {
-    const next = [r, ...userReviews];
-    setUserReviews(next);
-    localStorage.setItem(STORAGE_REVIEWS, JSON.stringify(next));
-  };
+  // const addReview = (r: Review) => {
+  //   const next = [r, ...userReviews];
+  //   setUserReviews(next);
+  //   localStorage.setItem(STORAGE_REVIEWS, JSON.stringify(next));
+  // };
 
   // SEO schema
   const schema = useMemo(() => ({
@@ -160,7 +158,6 @@ export function Reviews() {
             <Filter className="h-4 w-4 text-muted-foreground" />
             <span className="text-sm text-muted-foreground mr-1">{T.filter}:</span>
             {([
-              ["helpful", T.helpful],
               ["recent", T.recent],
               ["rating", T.rating],
             ] as [SortKey, string][]).map(([key, label]) => (
@@ -177,12 +174,7 @@ export function Reviews() {
               </button>
             ))}
           </div>
-          <Button
-            onClick={() => setOpen(true)}
-            className="bg-gold-gradient text-gold-foreground hover:opacity-90 shadow-gold"
-          >
-            <Plus className="h-4 w-4" /> {T.add}
-          </Button>
+          {/* Botón de agregar reseña comentado para uso futuro */}
         </div>
 
         {/* Reviews grid */}
@@ -191,17 +183,13 @@ export function Reviews() {
             <ReviewCard
               key={r.id}
               review={r}
-              likes={getLikes(r)}
-              liked={!!liked[r.id]}
-              onLike={() => toggleLike(r.id)}
               lang={lang}
-              labelHelpfulQ={T.helpfulQ}
-              labelPeople={T.peopleFound}
             />
           ))}
         </div>
       </div>
 
+      {/* Add review modal commented out for future use
       {open && (
         <AddReviewModal
           T={T}
@@ -213,6 +201,7 @@ export function Reviews() {
           }}
         />
       )}
+      */}
     </section>
   );
 }
@@ -230,9 +219,9 @@ function StatCard({ value, label, icon }: { value: string; label: string; icon: 
 }
 
 function ReviewCard({
-  review, likes, liked, onLike, lang, labelHelpfulQ, labelPeople,
+  review, lang,
 }: {
-  review: Review; likes: number; liked: boolean; onLike: () => void; lang: "es" | "en"; labelHelpfulQ: string; labelPeople: string;
+  review: Review; lang: "es" | "en";
 }) {
   const date = new Date(review.date).toLocaleDateString(lang === "es" ? "es-ES" : "en-US", { year: "numeric", month: "short", day: "numeric" });
   return (
@@ -264,26 +253,12 @@ function ReviewCard({
       )}
 
       <p className="mt-4 text-sm text-foreground/90 leading-relaxed flex-1">"{review.comment}"</p>
-
-      <footer className="mt-5 pt-4 border-t border-border">
-        <div className="text-xs text-muted-foreground mb-2">{labelHelpfulQ}</div>
-        <button
-          onClick={onLike}
-          className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-sm font-medium transition-all ${
-            liked
-              ? "bg-accent text-accent-foreground border-accent shadow-gold"
-              : "bg-card border-border text-foreground hover:border-accent hover:text-accent"
-          }`}
-        >
-          <ThumbsUp className={`h-4 w-4 transition-transform ${liked ? "scale-110" : ""}`} />
-          <span className="tabular-nums">{likes}</span>
-          <span className="hidden sm:inline text-xs opacity-80">· {labelPeople}</span>
-        </button>
-      </footer>
+      {/* Se elimina temporalmente la acción de like para que queden solo comentarios */}
     </article>
   );
 }
 
+/*
 function AddReviewModal({
   T, onClose, onSubmit,
 }: {
@@ -395,3 +370,4 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
     </label>
   );
 }
+*/
