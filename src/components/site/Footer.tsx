@@ -43,7 +43,10 @@ export function Footer() {
       </div>
       <div className="border-t border-white/10">
         <div className="container mx-auto px-4 py-5 text-center text-xs text-navy-foreground/60">
-          © {new Date().getFullYear()} Luzuriaga Legal Services. {tr("rights")}
+          <div>© {new Date().getFullYear()} Luzuriaga Legal Services. {tr("rights")}</div>
+          <div className="mt-2">
+            Programado por AlucardTech | Para más información contáctanos <a href="https://wa.me/593963356625" target="_blank" rel="noreferrer" className="text-gold hover:underline">aquí</a>
+          </div>
         </div>
       </div>
     </footer>
