@@ -39,7 +39,7 @@ const TEAM: TeamMember[] = [
   },
   {
     id: "tm2",
-    name: "Carlos Luzuriaga",
+    name: "Carlos Terán",
     role: { es: "Asistente Legal & Coordinador de Clientes", en: "Legal Assistant & Client Coordinator" },
     experience: { es: "5+ años", en: "5+ years" },
     specialties: {

@@ -85,7 +85,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             },
             {
               "@type": "Person",
-              name: "Carlos Luzuriaga",
+              name: "Carlos Terán",
               jobTitle: "Legal Assistant & Client Coordinator",
               description: "Legal assistant with 5+ years experience in document management, client coordination and bilingual customer service.",
               knowsLanguage: ["Spanish", "English"],
